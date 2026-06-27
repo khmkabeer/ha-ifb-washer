@@ -1,0 +1,11 @@
+{
+  "domain": "ifb_washer",
+  "name": "IFB Washer",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/custom-components/ifb_washer",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/custom-components/ifb_washer/issues",
+  "requirements": ["paho-mqtt==2.1.0"],
+  "version": "0.1.0"
+}
