@@ -41,10 +41,46 @@ class IfbWasherEntity(CoordinatorEntity[IfbWasherCoordinator]):
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        """Return shared debug attributes."""
+        """Return shared state attributes."""
         data = self.coordinator.data or {}
+        washer = self.entry.data.get("washer", {})
         return {
-            "source": data.get("source"),
+            "washer_model": washer.get("model"),
+            "model_code": washer.get("modelCode"),
             "updated_at": data.get("updated_at"),
             "last_updated_at": data.get("last_updated_at"),
+            "state": data.get("state"),
+            "state_name": data.get("state_name"),
+            "program_code": data.get("program_code"),
+            "program_name": data.get("program_name"),
+            "remaining_minutes": data.get("remaining_minutes"),
+            "program_minutes": data.get("program_minutes"),
+            "progress_percent": data.get("progress_percent"),
+            "standby_flag": data.get("standby_flag"),
+            "iot_function": data.get("iot_function"),
+            "delay_start_minutes": data.get("delay_start_minutes"),
+            "soak": data.get("soak"),
+            "childlock": data.get("childlock"),
+            "door": data.get("door"),
+            "door_state": data.get("door_state"),
+            "spin_speed": data.get("spin_speed"),
+            "spin_speed_code": data.get("spin_speed_code"),
+            "temperature": data.get("temperature"),
+            "temperature_code": data.get("temperature_code"),
+            "water_temperature": data.get("water_temperature"),
+            "motor_speed_raw": data.get("motor_speed_raw"),
+            "water_level_frequency_raw": data.get("water_level_frequency_raw"),
+            "alarm1": data.get("alarm1"),
+            "alarm2": data.get("alarm2"),
+            "alarm3": data.get("alarm3"),
+            "alarm4": data.get("alarm4"),
+            "auto_dd_state_error": data.get("auto_dd_state_error"),
+            "unbalance": data.get("unbalance"),
+            "unbalance_fault": data.get("unbalance_fault"),
+            "load_flag": data.get("load_flag"),
+            "fault": data.get("fault"),
+            "active_error_title": data.get("active_error_title"),
+            "active_error_source": data.get("active_error_source"),
+            "active_error_code": data.get("active_error_code"),
+            "active_errors": data.get("active_errors"),
         }

@@ -7,6 +7,7 @@ from typing import Any, Callable
 
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass, BinarySensorEntity, BinarySensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -38,7 +39,20 @@ BINARY_SENSORS: tuple[IfbBinarySensorDescription, ...] = (
     IfbBinarySensorDescription(
         key="running",
         translation_key="running",
-        value_fn=lambda data: data.get("state") not in (None, 0, 1, 13, 14),
+        value_fn=lambda data: data.get("state") not in (None, 0, 1, 13, 14, 65, 118),
+    ),
+    IfbBinarySensorDescription(
+        key="fault",
+        translation_key="fault",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        value_fn=lambda data: bool(data.get("fault")),
+    ),
+    IfbBinarySensorDescription(
+        key="unbalance",
+        translation_key="unbalance",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda data: bool(data.get("unbalance_fault")),
     ),
 )
 

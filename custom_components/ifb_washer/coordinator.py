@@ -12,6 +12,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import IfbApiClient, IfbApiError, decode_mqtt_payload
+from .command import build_fixed_command, build_program_command
 from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -35,6 +36,9 @@ class IfbWasherCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             data = await self.client.get_progress()
         except IfbApiError as err:
             raise UpdateFailed(str(err)) from err
+        merged = dict(self.data or {})
+        merged.update(data)
+        data = merged
         data["updated_at"] = datetime.now().isoformat(timespec="seconds")
         return data
 
@@ -92,7 +96,7 @@ class IfbWasherMqttClient:
             _LOGGER.debug("Subscribed to IFB MQTT topic %s", response_topic)
 
         def on_message(mqtt_client: Any, userdata: Any, message: Any) -> None:
-            decoded = decode_mqtt_payload(bytes(message.payload))
+            decoded = decode_mqtt_payload(bytes(message.payload), self.client.data.get("washer", {}).get("modelCode"))
             self.hass.loop.call_soon_threadsafe(self.coordinator.apply_mqtt_update, decoded)
 
         mqttc = mqtt.Client(client_id=mqtt_client_id, protocol=mqtt.MQTTv311)
@@ -104,6 +108,27 @@ class IfbWasherMqttClient:
         mqttc.connect(self.entry.data.get("mqtt_host", "mqtt2.ifbcloud.in"), int(self.entry.data.get("mqtt_port", 8883)), keepalive=30)
         mqttc.loop_start()
         self._mqtt = mqttc
+
+    async def async_select_program(self, program_code: int) -> None:
+        """Publish a program selection command."""
+        payload = build_program_command(program_code)
+        await self.hass.async_add_executor_job(self._publish_command, payload)
+
+    async def async_send_command(self, command: str) -> None:
+        """Publish a fixed washer command."""
+        payload = build_fixed_command(command)
+        await self.hass.async_add_executor_job(self._publish_command, payload)
+
+    def _publish_command(self, payload: bytes) -> None:
+        if not self._mqtt:
+            raise IfbApiError("MQTT is not connected.")
+        washer = self.entry.data["washer"]
+        topic_id = washer.get("mac") or washer.get("serial")
+        if not topic_id:
+            raise IfbApiError("No washer MQTT topic id available.")
+        result = self._mqtt.publish(f"Command/{topic_id}", payload, qos=0)
+        if getattr(result, "rc", 0) != 0:
+            raise IfbApiError(f"MQTT publish failed rc={result.rc}")
 
     async def async_stop(self) -> None:
         """Stop MQTT listener."""

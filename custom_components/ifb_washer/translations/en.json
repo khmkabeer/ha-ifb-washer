@@ -35,6 +35,21 @@
       "phase": {
         "name": "Phase"
       },
+      "fault": {
+        "name": "Fault"
+      },
+      "program": {
+        "name": "Program"
+      },
+      "spin_speed": {
+        "name": "Spin speed"
+      },
+      "temperature": {
+        "name": "Temperature"
+      },
+      "door": {
+        "name": "Door"
+      },
       "remaining_time": {
         "name": "Remaining time"
       },
@@ -46,6 +61,61 @@
       },
       "raw_state": {
         "name": "Raw state"
+      },
+      "load": {
+        "name": "Load"
+      },
+      "unbalance": {
+        "name": "Unbalance"
+      },
+      "water_temperature": {
+        "name": "Water temperature"
+      },
+      "motor_speed_raw": {
+        "name": "Motor speed raw"
+      },
+      "alarm1": {
+        "name": "Alarm 1"
+      },
+      "alarm2": {
+        "name": "Alarm 2"
+      },
+      "alarm3": {
+        "name": "Alarm 3"
+      },
+      "alarm4": {
+        "name": "Alarm 4"
+      },
+      "auto_dd_state_error": {
+        "name": "Auto detergent error"
+      }
+    },
+    "select": {
+      "program_select": {
+        "name": "Program select"
+      }
+    },
+    "button": {
+      "turn_on": {
+        "name": "Turn on"
+      },
+      "start": {
+        "name": "Start"
+      },
+      "pause": {
+        "name": "Pause"
+      },
+      "cancel": {
+        "name": "Cancel"
+      },
+      "turn_off": {
+        "name": "Turn off"
+      },
+      "child_lock_on": {
+        "name": "Child lock on"
+      },
+      "child_lock_off": {
+        "name": "Child lock off"
       }
     },
     "binary_sensor": {
@@ -57,6 +127,12 @@
       },
       "running": {
         "name": "Running"
+      },
+      "fault": {
+        "name": "Fault"
+      },
+      "unbalance": {
+        "name": "Unbalance"
       }
     }
   }

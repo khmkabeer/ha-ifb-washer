@@ -1,97 +1,144 @@
-# IFB Washer for Home Assistant
+<p align="center">
+  <img src="icon.png" alt="IFB Washer icon" width="96">
+</p>
 
-Unofficial Home Assistant custom integration for Wi-Fi IFB washing machines using the My IFB cloud APIs.
+# IFB Washer
 
-This integration is based on observed My IFB Android app traffic. It supports OTP login, automatic washer discovery, REST progress polling, and MQTT status updates.
+Unofficial Home Assistant integration for Wi-Fi IFB washing machines connected to the My IFB app.
 
-## Status
+The integration signs in with your My IFB account, discovers your Wi-Fi washer, reads live status through MQTT, and exposes washer controls in Home Assistant.
 
-Early read-only release.
+## Features
 
-Supported today:
-
-- UI config flow
+- Config flow setup from the Home Assistant UI
 - Phone or email OTP login
-- Automatic PKCE token exchange
-- Automatic Wi-Fi washer discovery
-- MQTT status subscription
-- REST fallback polling every 30 seconds
-- Phase, remaining time, program time, progress, raw state
-- Online, running, and child-lock binary sensors
-
-Not supported yet:
-
-- Start, pause, cancel, or power commands
+- Automatic washer discovery
+- MQTT status updates with REST polling fallback
 - Program selection
-- Multi-washer selection UI
+- Start, pause, cancel, power, and child-lock command buttons
+- Program, phase, time remaining, progress, door, temperature, spin speed, child lock, and online/running status
+- Diagnostic entities for decoded washer flags and alarm bytes
+
+## Before You Install
+
+You need:
+
+- A Home Assistant instance where custom integrations are allowed.
+- A My IFB account that already has the washer added in the official My IFB app.
+- The washer should be a Wi-Fi model and should appear online in the My IFB app at least once.
+- Your My IFB phone number or email address.
+- The IFB app OAuth signing values required by the current login flow:
+  - `oauth_consumer_key`
+  - `oauth_consumer_secret`
+  - `oauth_token`
+  - `oauth_token_secret`
+
+Do not use your Home Assistant long-lived token or your My IFB password in those OAuth fields. They are app signing values used only to sign the IFB OTP login requests.
 
 ## Installation
 
-### HACS Custom Repository
+### HACS
 
 1. Open HACS.
-2. Go to Custom repositories.
-3. Add this repository URL.
-4. Select category `Integration`.
-5. Install `IFB Washer`.
-6. Restart Home Assistant.
+2. Add this repository as a custom repository:
+   ```text
+   https://github.com/khmkabeer/ha-ifb-washer
+   ```
+3. Choose category **Integration**.
+4. Install **IFB Washer**.
+5. Restart Home Assistant.
 
 ### Manual
 
-Copy this folder into Home Assistant:
+Copy the integration folder into Home Assistant:
 
 ```text
 custom_components/ifb_washer
 ```
 
-Then restart Home Assistant.
+The final Home Assistant path should be:
+
+```text
+/config/custom_components/ifb_washer
+```
+
+Restart Home Assistant.
 
 ## Setup
 
-Go to:
+After Home Assistant restarts:
 
-Settings -> Devices & services -> Add integration -> IFB Washer
+1. Go to **Settings > Devices & services**.
+2. Select **Add integration**.
+3. Search for **IFB Washer**.
+4. Enter your My IFB phone number or email.
+5. Select the login type, either phone or email.
+6. Enter the calling code, for example `+91`.
+7. Enter the four IFB app OAuth signing values.
+8. Submit the form and wait for the OTP.
+9. Enter the OTP sent by IFB.
 
-Enter your My IFB phone number or email. The integration will request an OTP, verify it, exchange the token, and discover the Wi-Fi washer automatically.
+The integration automatically discovers the first Wi-Fi washing machine on the account.
 
-The setup flow also asks for IFB OAuth credentials used to sign the My IFB login endpoints. These values are not included in this public repository.
+After setup completes, check the new IFB Washer device page for sensors, buttons, and the program selector. If the washer does not appear, confirm it is visible in the official My IFB app and try setup again.
+
+The reusable login, token, discovery, and MQTT auth notes live in [docs/auth-flow.md](docs/auth-flow.md).
 
 ## Entities
 
-Sensors:
+### Sensors
 
+- Program
 - Phase
 - Remaining time
 - Program time
 - Progress
-- Raw state
+- Door
+- Temperature
+- Spin speed
 
-Binary sensors:
+### Binary Sensors
 
 - Online
 - Running
 - Child lock
+- Unbalance
 
-## Observed State Mapping
+### Select
 
-| State | Name |
-| --- | --- |
-| 0 | selected |
-| 1 | standby |
-| 4 | main_wash |
-| 8 | first_rinse |
-| 9 | second_rinse |
-| 10 | final_rinse |
-| 11 | final_spin |
-| 13 | complete |
-| 14 | paused |
-| 17 | heating |
-| 18 | draining |
+- Program select
+
+### Buttons
+
+- Start
+- Pause
+- Cancel
+- Power
+- Child lock on
+- Child lock off
+
+### Diagnostic Sensors
+
+- Raw state
+- Load
+- Unbalance
+- Water temperature
+- Motor speed
+- Alarm 1
+- Alarm 2
+- Alarm 3
+
+## Notes
+
+- Program names and status phases are decoded from observed My IFB app traffic and may vary by model.
+- Command support depends on the washer being online and accepting commands at that moment.
+- The power command is based on the washer command observed from the app. Some models may treat it as a toggle-style command.
+- Multi-washer account selection is not yet exposed in the setup flow.
 
 ## Privacy
 
-The integration stores IFB access and refresh tokens in the Home Assistant config entry, like other cloud integrations. Do not publish diagnostic files that include tokens.
+Access and refresh tokens are stored in the Home Assistant config entry, like other cloud integrations. Do not share Home Assistant diagnostics or logs if they include account or token data.
 
 ## Disclaimer
 
-This project is unofficial and is not affiliated with IFB.
+This project is unofficial and is not affiliated with, endorsed by, or supported by IFB.
