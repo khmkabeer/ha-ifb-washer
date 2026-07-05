@@ -4,7 +4,7 @@
 
 # IFB Washer
 
-Unofficial Home Assistant integration for Wi-Fi IFB washing machines connected to the My IFB app.
+Unofficial Home Assistant integration for Wi-Fi IFB washing machines connected to the My IFB app. (Tested partially with **Senator BXN 802** model)
 
 The integration signs in with your My IFB account, discovers your Wi-Fi washer, reads live status through MQTT, and exposes washer controls in Home Assistant.
 
