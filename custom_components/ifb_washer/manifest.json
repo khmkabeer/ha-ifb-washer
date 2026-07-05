@@ -7,6 +7,5 @@
   "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/khmkabeer/ha-ifb-washer/issues",
   "requirements": ["paho-mqtt==2.1.0"],
-  "version": "0.1.0",
-  "icon": "https://github.com/khmkabeer/ha-ifb-washer/raw/main/custom_components/ifb_washer/icon.png"
+  "version": "0.1.0"
 }
