@@ -1,6 +1,6 @@
 {
   "domain": "ifb_washer",
-  "name": "IFB Washer",
+  "name": "My IFB",
   "codeowners": [],
   "config_flow": true,
   "documentation": "https://github.com/khmkabeer/ha-ifb-washer",

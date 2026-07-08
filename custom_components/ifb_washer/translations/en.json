@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "IFB Washer",
+        "title": "My IFB",
         "description": "Enter your My IFB login identifier. An OTP will be sent by IFB.",
         "data": {
           "identifier": "Phone number or email",

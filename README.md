@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="icon.png" alt="IFB Washer icon" width="96">
+  <img src="https://raw.githubusercontent.com/khmkabeer/ha-ifb-washer/main/icon.png" alt="My IFB icon" width="96">
 </p>
 
-# IFB Washer
+# My IFB
 
 Unofficial Home Assistant integration for Wi-Fi IFB washing machines connected to the My IFB app. (Tested partially with **Senator BXN 802** model)
 
@@ -45,7 +45,7 @@ Do not use your Home Assistant long-lived token or your My IFB password in those
    https://github.com/khmkabeer/ha-ifb-washer
    ```
 3. Choose category **Integration**.
-4. Install **IFB Washer**.
+4. Install **My IFB**.
 5. Restart Home Assistant.
 
 ### Manual
@@ -64,13 +64,17 @@ The final Home Assistant path should be:
 
 Restart Home Assistant.
 
+## Integration Icon
+
+The My IFB icon is included in this repository and prepared for the Home Assistant Brands format under `custom_integrations/ifb_washer/`. Home Assistant will show the integration tile icon after those files are accepted into the Home Assistant Brands repository and the Brands CDN refreshes.
+
 ## Setup
 
 After Home Assistant restarts:
 
 1. Go to **Settings > Devices & services**.
 2. Select **Add integration**.
-3. Search for **IFB Washer**.
+3. Search for **My IFB**.
 4. Enter your My IFB phone number or email.
 5. Select the login type, either phone or email.
 6. Enter the calling code, for example `+91`.
@@ -80,7 +84,7 @@ After Home Assistant restarts:
 
 The integration automatically discovers the first Wi-Fi washing machine on the account.
 
-After setup completes, check the new IFB Washer device page for sensors, buttons, and the program selector. If the washer does not appear, confirm it is visible in the official My IFB app and try setup again.
+After setup completes, check the new My IFB device page for sensors, buttons, and the program selector. If the washer does not appear, confirm it is visible in the official My IFB app and try setup again.
 
 The reusable login, token, discovery, and MQTT auth notes live in [docs/auth-flow.md](docs/auth-flow.md).
 

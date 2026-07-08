@@ -1,5 +1,5 @@
 {
-  "name": "IFB Washer",
+  "name": "My IFB",
   "render_readme": true,
   "domains": ["sensor", "binary_sensor", "button", "select"],
   "homeassistant": "2024.6.0"
